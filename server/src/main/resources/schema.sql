@@ -1,0 +1,34 @@
+DROP TABLE IF EXISTS USERS;
+DROP TABLE IF EXISTS OTTS;
+DROP TABLE IF EXISTS PARTYS;
+DROP TABLE IF EXISTS USER_PARTY;
+
+CREATE TABLE USERS (
+    id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    user_id VARCHAR(255) NOT NULL ,
+    password VARCHAR(255) NOT NULL,
+    nick_name VARCHAR(255) NOT NULL
+);
+
+
+CREATE TABLE OTTS (
+    ott_id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    ott_name VARCHAR(255) NOT NULL,
+    max_user int NOT NULL,
+    price int NOT NULL
+);
+
+CREATE TABLE PARTYS (
+    party_id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    ott_Id bigint NOT NULL REFERENCES OTTS (ott_id),
+    user_count int NOT NULL DEFAULT 1,
+    open_chat_url VARCHAR(255) NOT NULL,
+    payment_day  int NOT NULL,
+    payment_month  int NOT NULL
+);
+
+CREATE TABLE USER_PARTY (
+    id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+    user_id VARCHAR(255) NOT NULL REFERENCES USERS(user_id),
+    party_id bigint NOT NULL REFERENCES PARTYS(party_id)
+);

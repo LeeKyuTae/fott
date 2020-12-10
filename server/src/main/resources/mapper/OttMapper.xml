@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fott.use_mybatis.dao.OttDao">
+    <select id="getAllOtt" resultType="com.fott.use_mybatis.domain.OTT">
+        SELECT *
+        FROM otts
+    </select>
+
+    <select id="getOtt" parameterType="com.fott.use_mybatis.dto.OttDto$ottRequest"
+            resultType="com.fott.use_mybatis.domain.OTT">
+        SELECT *
+        FROM otts
+        WHERE ott_id = #{ottId}
+    </select>
+</mapper>

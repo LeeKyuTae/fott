@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fott.use_mybatis.dao.PartyDao">
+    <insert id="makeParty" parameterType="com.fott.use_mybatis.dto.PartyDto$makeRequest"
+            useGeneratedKeys="true" keyProperty="partyId">
+        INSERT INTO PARTYS (ott_id, open_chat_url, payment_day, payment_month)
+        VALUES (#{ottId},  #{openChatUrl}, #{paymentDay}, #{paymentMonth})
+    </insert>
+
+    <select id="getAllPartyList" resultType="com.fott.use_mybatis.dto.PartyDto$response">
+        SELECT partys.party_id, otts.price, partys.payment_day, partys.payment_month,
+               partys.user_count, otts.max_user, otts.ott_name, partys.open_chat_url
+        FROM  partys INNER JOIN otts ON partys.ott_id = otts.ott_id
+        WHERE partys.user_count &lt; otts.max_user
+        ORDER BY otts.ott_name
+    </select>
+
+    <select id="getPartyExample" resultType="com.fott.use_mybatis.domain.Party">
+        SELECT *
+        FROM  partys
+    </select>
+
+    <select id="getParty" parameterType="long"
+            resultType="com.fott.use_mybatis.dto.PartyDto$response">
+        SELECT partys.party_id, otts.price, partys.payment_day, partys.payment_month,
+               partys.user_count, otts.max_user, otts.ott_name, partys.open_chat_url
+        FROM  partys INNER JOIN otts ON partys.ott_id = otts.ott_id
+        WHERE partys.party_id = #{partyId}
+    </select>
+
+    <select id="fastMatchParty" parameterType="com.fott.use_mybatis.dto.PartyDto$fastMatchingRequest"
+            resultType="com.fott.use_mybatis.dto.PartyDto$response">
+        SELECT partys.party_id, otts.price, partys.payment_day, partys.payment_month,
+               partys.user_count, otts.max_user, otts.ott_name, partys.open_chat_url
+        FROM  partys INNER JOIN otts ON partys.ott_id = otts.ott_id
+        WHERE partys.ott_id = #{ottId} AND partys.payment_month = #{paymentMonth}
+        LIMIT 1
+    </select>
+
+    <update id="participateParty" parameterType="com.fott.use_mybatis.dto.PartyDto$participateRequest"
+        useGeneratedKeys="false">
+        UPDATE PARTYS
+        SET user_count = user_count+1
+        WHERE party_id = #{partyId}
+    </update>
+</mapper>

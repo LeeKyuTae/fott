@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.fott.use_mybatis.dao.UserDao">
+    <insert id="insertUser" parameterType="com.fott.use_mybatis.dto.UserDto$SignupRequest"
+    useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO users (user_id, password, nick_name )
+        VALUES (#{userId}, #{password}, #{nickName})
+    </insert>
+
+    <select id="findUserByIdAndPassword" parameterType="com.fott.use_mybatis.dto.UserDto$SigninRequest"
+            resultType="com.fott.use_mybatis.domain.User">
+        SELECT user_id, nick_name
+        FROM users
+        WHERE user_id = #{userId} AND password = #{password}
+    </select>
+
+    <select id="findUserById" parameterType="com.fott.use_mybatis.dto.UserDto$SigninRequest"
+            resultType="com.fott.use_mybatis.domain.User">
+        SELECT user_id
+        FROM users
+        WHERE user_id = #{userId}
+    </select>
+</mapper>
